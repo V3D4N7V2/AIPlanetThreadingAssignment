@@ -51,7 +51,7 @@ class MsgQThreaded(threading.Thread):
         self.sleeping = False
 
     def run(self):
-        # randomly send few messages.
+        #  Send few messages to randomly picked nodes.
         for _ in range(self.randomMessagesCount):
             if self.number_of_threads == 1: raise ValueError("Number of threads should be greater than 1")
             sendToThreadID = random.randint(0, self.number_of_threads - 1)
@@ -109,18 +109,18 @@ def main():
     # Initialize threads and their respective message queues
     for i in range(numThreads):
         msg_queues[i] = PriorityMessageQueue()
-        randomMessagesCount = random.randint(1, 5)
-        thread = MsgQThreaded(i, msg_queues, executor, randomMessagesCount, numThreads)
+        messagesCount = random.randint(1, 5) # set random messages for each thread., can be set to a static value randomMessagesCountto set a fixed number of messages to random hosts. 
+        thread = MsgQThreaded(i, msg_queues, executor, messagesCount, numThreads)
         threadsList.append(thread)
         thread.start()
 
     # Devault Messages, to avoid no messages sent.
-    threadsList[0].msg_send(r_tid=5, priority=2, msg="Default Message T0 -> T5 Priority 2")
-    threadsList[1].msg_send(r_tid=4, priority=1, msg="Default Message T1 -> T4 Priority 1")
-    threadsList[2].msg_send(r_tid=3, priority=3, msg="Default Message T2 -> T3 Priority 3")
-    threadsList[3].msg_send(r_tid=2, priority=2, msg="Default Message T3 -> T2 Priority 2")
-    threadsList[4].msg_send(r_tid=1, priority=1, msg="Default Message T4 -> T1 Priority 1")
-    threadsList[5].msg_send(r_tid=0, priority=2, msg="Default Message T5 -> T0 Priority 2")
+    threadsList[0].msg_send(r_tid=6, priority=2, msg="Default Message T0 -> T6 Priority 2")
+    threadsList[1].msg_send(r_tid=5, priority=1, msg="Default Message T1 -> T5 Priority 1")
+    threadsList[2].msg_send(r_tid=4, priority=3, msg="Default Message T2 -> T4 Priority 3")
+    threadsList[3].msg_send(r_tid=3, priority=2, msg="Default Message T3 -> T3 Priority 2")
+    threadsList[4].msg_send(r_tid=2, priority=1, msg="Default Message T4 -> T2 Priority 1")
+    threadsList[5].msg_send(r_tid=1, priority=2, msg="Default Message T5 -> T1 Priority 2")
     threadsList[6].msg_send(r_tid=0, priority=2, msg="Default Message T6 -> T0 Priority 2")
     
 
