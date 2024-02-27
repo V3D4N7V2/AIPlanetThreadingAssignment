@@ -105,6 +105,7 @@ def main():
     numThreads = 7
     msg_queues = {}
     threadsList = []
+    waitForCompletionTime = 10
     executor = ThreadPoolExecutor(max_workers=7)
     # Initialize threads and their respective message queues
     for i in range(numThreads):
@@ -124,7 +125,7 @@ def main():
     threadsList[6].msg_send(r_tid=0, priority=2, msg="Default Message T6 -> T0 Priority 2")
     
 
-    time.sleep(10)  # Allow some time for messages to be processed
+    time.sleep(waitForCompletionTime)  # Allow some time for messages to be processed
 
     # Stop threads
     for thread in threadsList:
@@ -132,6 +133,11 @@ def main():
         thread.join()
     # clpse Thread Pool.
     executor.shutdown()
+    # Check that all the messages have been processed
+    for i in range(numThreads):
+        assert msg_queues[i].is_empty()
+
+    
 
 
 if __name__ == "__main__":

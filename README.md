@@ -17,6 +17,13 @@ python3 main.py
  - It also wakes the reciever, so that it can handle the message if it was sleeping.
  - Then processes the messages from other threads.
 
+## Assumptions
+ - Threads don't know when they have recieved all messages, so let them run for a fixed ammount of time and terminate.
+ - This is defined in waitForCompletionTime, which should be sufficient for all threads to recieve and process all messages.
+ - stop and join all theads after this interval.
+ - Main function tests the code by sending messages from each thread to another thread and then waits for the threads to complete their tasks., 
+ - main function  checks if all queues are empty after the threads have completed their tasks.
+
 ## General Info
    - Runs 7 threads that send messages to each other.
    - 7 Threads in thread pool that process the messages.
@@ -31,3 +38,17 @@ python3 main.py
 ## Notes
 - numThreads in main function can be changed to any number of threads.
 - messagesCount in main function can be changed to any number of messages to send to randmonly picked threads.
+- waitForCompletionTime in main function can be changed to any time to wait for the threads to complete their tasks.
+
+## Test Cases
+
+- Test Case 1: 
+  - Total Threads: 7
+  - Expected: All threads should send and recieve at least one message to ensure working.
+
+## Good Design and Coding Practices
+- Used OOP concepts to create a PriorityMessageQueue class.
+- Comments are added to explain the code.
+- Used meaningful variable names.
+- Used a main function to test the code.
+- Mutexes are used to make sure no simultaneous access to the priority queue.
